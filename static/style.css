@@ -1,0 +1,200 @@
+body {
+    background-color: #141414;
+    color: white;
+    font-family: Arial;
+    margin: 0;
+}
+
+/* 🔝 Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: #000;
+}
+
+.topbar a {
+    color: red;
+    margin-left: 15px;
+}
+
+/* 🔍 Search */
+form {
+    text-align: center;
+    margin: 20px;
+}
+
+input {
+    padding: 10px;
+    width: 60%;
+    max-width: 400px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    padding: 10px 15px;
+    background: red;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+/* 🎬 Grid */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+/* 🎞️ Cards */
+.card {
+    background: #1f1f1f;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.card img {
+    width: 100%;
+}
+
+.card p {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* 🔐 Auth Pages */
+.auth-container {
+    width: 300px;
+    margin: 100px auto;
+    text-align: center;
+}
+
+.auth-container input {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 🎥 Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.fav-btn {
+    background: transparent;
+    border: none;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.modal iframe {
+    width: 80%;
+    height: 60%;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* 🎬 Selected Movie Section */
+.selected-movie {
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 1000px;
+}
+
+/* Card Layout */
+.selected-card {
+    display: flex;
+    gap: 25px;
+    background: #1f1f1f;
+    padding: 20px;
+    border-radius: 12px;
+    align-items: center;
+}
+
+/* Poster */
+.selected-card img {
+    width: 250px;
+    border-radius: 10px;
+}
+
+/* Details */
+.details {
+    flex: 1;
+}
+
+.details p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+/* Play Button */
+.details button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: red;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.details button:hover {
+    background: #e50914;
+}
+
+/* 📱 Mobile */
+@media (max-width: 600px) {
+
+    .selected-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .selected-card img {
+        width: 80%;
+    }
+
+    .details {
+        text-align: center;
+    }
+
+    input,
+    button {
+        width: 80%;
+        margin: 10px 0;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Movie Recommender</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- 🔝 TOPBAR -->
+    <div class="topbar">
+        <h2>🎬 Movie Recommender</h2>
+        <div>
+            <span>Welcome {{ user }}</span>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- 🔍 SEARCH -->
+    <form method="POST">
+        <input list="movies" name="movie" placeholder="Search movie..." required>
+
+        <datalist id="movies">
+            {% for m in movies %}
+            <option value="{{ m }}">
+                {% endfor %}
+        </datalist>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- 📢 EMPTY MESSAGE -->
+    {% if not recommendations[0] and not selected_movie %}
+    <h2 style="text-align:center;">Search a movie to get recommendations 🎬</h2>
+    {% endif %}
+
+    <!-- 🎬 SELECTED MOVIE -->
+    {% if selected_movie %}
+    <div class="selected-movie">
+
+        <h2>🎬 {{ selected_movie.name }}</h2>
+
+        <div class="selected-card">
+            <img src="{{ selected_movie.poster }}">
+
+            <div class="details">
+                <p>
+                    {% for i in range(selected_movie.rating|int // 2) %}
+                    ⭐
+                    {% endfor %}
+                </p>
+                <p>{{ selected_movie.overview }}</p>
+
+                <button onclick="playTrailer('{{ selected_movie.trailer }}')">
+                    ▶ Play Trailer
+                </button>
+            </div>
+        </div>
+
+        <h2 style="text-align:center;">Similar Movies 🎥</h2>
+
+    </div>
+    {% endif %}
+
+    <!-- 🎬 RECOMMENDATIONS -->
+    <div class="container">
+        {% if recommendations[0] %}
+        {% for i in range(recommendations[0]|length) %}
+        <div class="card">
+
+            <img src="{{ recommendations[1][i] }}" onclick="playTrailer('{{ recommendations[2][i] }}')">
+
+            <p>{{ recommendations[0][i] }}</p>
+
+            <!-- ❤️ Favorite -->
+            <form method="POST" action="/add_favorite">
+                <input type="hidden" name="movie" value="{{ recommendations[0][i] }}">
+                <button class="fav-btn">❤️</button>
+            </form>
+
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- ❤️ FAVORITES -->
+    <h3 style="text-align:center;">Your Favorites ❤️</h3>
+
+    {% if favorites %}
+    <ul style="text-align:center;">
+        {% for movie in favorites %}
+        <li>{{ movie }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p style="text-align:center;">No favorites yet. Add some ❤️</p>
+    {% endif %}
+
+    <!-- 🎥 TRAILER MODAL -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">✖</span>
+        <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        function playTrailer(url) {
+            if (!url) {
+                alert("Trailer not available");
+                return;
+            }
+
+            document.getElementById("modal").style.display = "flex";
+            document.getElementById("videoFrame").src = url;
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+            document.getElementById("videoFrame").src = "";
+        }
+    </script>
+
+</body>
+
+</html>
