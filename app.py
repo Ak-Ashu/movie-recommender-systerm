@@ -16,6 +16,9 @@ app.secret_key = os.getenv("SECRET_KEY", "secret123")
 
 API_KEY = os.getenv("API_KEY")
 
+if not API_KEY:
+    print("WARNING: API_KEY not found")
+    
 # -------------------- LOAD DATA --------------------
 
 movies = pickle.load(open('movies.pkl', 'rb'))

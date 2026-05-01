@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.env
+users.db
+.ipynb_checkpoints/
+.idea/
+*.pyc

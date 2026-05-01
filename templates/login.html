@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <title>Login | Movie Recommender</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
 
-<div class="auth-container">
-    <h2>Login</h2>
+<div class="login-container">
 
-    <form method="POST">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+    <div class="login-box">
+        <h2>🎬 Welcome Back</h2>
+        <p class="subtitle">Login to continue</p>
 
-    <p>Don't have an account?</p>
-    <a href="/register">Register</a>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="register-text">
+            Don't have an account?
+            <a href="/register">Register</a>
+        </p>
+    </div>
+
 </div>
 
 </body>

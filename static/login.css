@@ -1,0 +1,99 @@
+/* 🔥 Background */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: url("https://images.unsplash.com/photo-1608889175111-7f9a3d8d6e71") no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Dark overlay */
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+}
+
+/* Container */
+.login-container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Glass Box */
+.login-box {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    width: 320px;
+    border-radius: 12px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+/* Heading */
+.login-box h2 {
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* Subtitle */
+.subtitle {
+    color: #bbb;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+/* Button */
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-box button:hover {
+    background: #e50914;
+}
+
+/* Register link */
+.register-text {
+    margin-top: 15px;
+    color: #ccc;
+}
+
+.register-text a {
+    color: red;
+    text-decoration: none;
+}
+
+.register-text a:hover {
+    text-decoration: underline;
+}
+
+/* 📱 Mobile */
+@media (max-width: 500px) {
+    .login-box {
+        width: 90%;
+        padding: 25px;
+    }
+}
