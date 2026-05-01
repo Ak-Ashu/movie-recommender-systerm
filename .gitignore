@@ -2,6 +2,7 @@
 __pycache__/
 .env
 users.db
+similarity.pkl
 .ipynb_checkpoints/
 .idea/
 *.pyc
