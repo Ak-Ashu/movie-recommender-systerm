@@ -17,16 +17,33 @@ app.secret_key = os.getenv("SECRET_KEY", "secret123")
 API_KEY = os.getenv("API_KEY")
 
 if not API_KEY:
-    print("WARNING: API_KEY not found")
+    print("⚠️ WARNING: API_KEY not found")
 
 # -------------------- LOAD DATA --------------------
 
 movies = pickle.load(open('movies.pkl', 'rb'))
 
+# ✅ FIX: handle missing similarity.pkl properly
 if os.path.exists("similarity.pkl"):
     similarity = pickle.load(open("similarity.pkl", "rb"))
 else:
     print("⚠️ similarity.pkl not found. Generating...")
+
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    # ⚠️ make sure 'tags' column exists in your dataset
+    if 'tags' not in movies.columns:
+        raise Exception("❌ 'tags' column missing in dataset")
+
+    cv = CountVectorizer(max_features=5000, stop_words='english')
+    vectors = cv.fit_transform(movies['tags']).toarray()
+
+    similarity = cosine_similarity(vectors)
+
+    pickle.dump(similarity, open("similarity.pkl", "wb"))
+
+    print("✅ similarity.pkl created")
 
 # -------------------- CACHE --------------------
 
@@ -74,6 +91,7 @@ def fetch_trailer(movie_id):
 
     return None
 
+
 def fetch_movie_details(movie_id):
     try:
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}"
@@ -90,6 +108,7 @@ def fetch_movie_details(movie_id):
         }
 
 # -------------------- RECOMMENDATION --------------------
+
 def recommend(movie):
     movie = movie.lower()
 
@@ -105,7 +124,7 @@ def recommend(movie):
         key=lambda x: x[1]
     )
 
-    # 🎬 Selected Movie (FIXED INDENTATION)
+    # 🎬 Selected Movie
     selected_idx = sorted_movies[0][0]
     movie_id = movies.iloc[selected_idx].movie_id
 
@@ -218,7 +237,7 @@ def add_favorite():
         c.execute("INSERT INTO favorites (username, movie) VALUES (?, ?)", (user, movie))
         conn.commit()
     except:
-        pass  # ignore duplicates
+        pass
 
     conn.close()
     return redirect('/')
