@@ -18,11 +18,15 @@ API_KEY = os.getenv("API_KEY")
 
 if not API_KEY:
     print("WARNING: API_KEY not found")
-    
+
 # -------------------- LOAD DATA --------------------
 
 movies = pickle.load(open('movies.pkl', 'rb'))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+
+if os.path.exists("similarity.pkl"):
+    similarity = pickle.load(open("similarity.pkl", "rb"))
+else:
+    print("⚠️ similarity.pkl not found. Generating...")
 
 # -------------------- CACHE --------------------
 
