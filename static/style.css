@@ -1,173 +1,291 @@
+/* 🌌 GLOBAL */
 body {
-    background-color: #141414;
-    color: white;
-    font-family: Arial;
     margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #0b0b0b;
+    color: white;
 }
 
-/* 🔝 Topbar */
+/* 🔝 NAVBAR */
 .topbar {
     display: flex;
     justify-content: space-between;
-    padding: 15px 30px;
-    background: #000;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.9);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.topbar h2 {
+    font-size: 20px;
 }
 
 .topbar a {
-    color: red;
-    margin-left: 15px;
-}
-
-/* 🔍 Search */
-form {
-    text-align: center;
-    margin: 20px;
-}
-
-input {
-    padding: 10px;
-    width: 60%;
-    max-width: 400px;
-    border-radius: 5px;
-    border: none;
-}
-
-button {
-    padding: 10px 15px;
-    background: red;
-    border: none;
-    color: white;
-    border-radius: 5px;
+    color: #ff4c4c;
+    text-decoration: none;
     margin-left: 10px;
 }
 
-/* 🎬 Grid */
-.container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 20px;
+.topbar a:hover {
+    color: white;
 }
 
-/* 🎞️ Cards */
-.card {
-    background: #1f1f1f;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.card img {
-    width: 100%;
-}
-
-.card p {
-    padding: 10px;
-    font-size: 14px;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-/* 🔐 Auth Pages */
-.auth-container {
-    width: 300px;
-    margin: 100px auto;
-    text-align: center;
-}
-
-.auth-container input {
-    width: 100%;
-    margin: 10px 0;
-}
-
-/* 🎥 Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+/* 🎬 HERO (FIXED SIZE + CENTERED) */
+.hero {
+    height: 60vh; /* FIXED HEIGHT */
+    background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070') center/cover no-repeat;
+    display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
-.fav-btn {
-    background: transparent;
-    border: none;
-    color: red;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.modal iframe {
-    width: 80%;
-    height: 60%;
-}
-
-.close {
+.hero::after {
+    content: "";
     position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 30px;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), #0b0b0b);
+}
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+    max-width: 700px;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* 🔍 SEARCH */
+.search-box {
+    display: flex;
+    justify-content: center;
+}
+
+.search-box input {
+    padding: 12px;
+    width: 300px;
+    border-radius: 8px 0 0 8px;
+    border: none;
+    outline: none;
+    background: #1c1c1c;
+    color: white;
+}
+
+.search-box button {
+    padding: 12px 18px;
+    background: #e50914;
+    border: none;
+    border-radius: 0 8px 8px 0;
     cursor: pointer;
 }
 
-/* 🎬 Selected Movie Section */
-.selected-movie {
-    margin: 40px auto;
-    padding: 20px;
-    max-width: 1000px;
+.search-box button:hover {
+    background: #ff1a1a;
 }
 
-/* Card Layout */
+/* 📢 TEXT */
+.search-text {
+    text-align: center;
+    margin: 30px;
+    color: #aaa;
+}
+
+/* 🎬 SELECTED MOVIE */
+.selected-movie {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
 .selected-card {
     display: flex;
     gap: 25px;
-    background: #1f1f1f;
+    background: #141414;
     padding: 20px;
     border-radius: 12px;
-    align-items: center;
 }
 
-/* Poster */
 .selected-card img {
-    width: 250px;
+    width: 220px;
     border-radius: 10px;
 }
 
-/* Details */
 .details {
     flex: 1;
 }
 
-.details p {
-    margin: 10px 0;
-    line-height: 1.5;
+.rating {
+    background: #e50914;
+    padding: 5px 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+    border-radius: 6px;
 }
 
-/* Play Button */
-.details button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: red;
-    border: none;
-    color: white;
-    border-radius: 6px;
+/* 🎬 SECTION TITLE */
+.section-title {
+    margin-top: 30px;
+}
+
+/* 🎬 GRID */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 18px;
+    padding: 20px 30px;
+}
+
+.selected-card button {
     cursor: pointer;
+}
+
+/* 🎞️ CARD */
+.card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer; /* 🔥 FIX CURSOR */
     transition: 0.3s;
 }
 
-.details button:hover {
-    background: #e50914;
+.card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
-/* 📱 Mobile */
-@media (max-width: 600px) {
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+
+.card p {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 13px;
+    z-index: 2;
+}
+
+.card:hover {
+    transform: scale(1.07);
+    box-shadow: 0 10px 20px rgba(255,0,0,0.25);
+}
+
+/* ❤️ FAVORITE */
+.fav-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 50%;
+    padding: 5px 8px;
+    cursor: pointer;
+    color: red;
+}
+
+/* ❤️ FAVORITES BOX */
+.favorites-box {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #141414;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* 🎥 MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* VIDEO */
+.modal iframe {
+    width: 70%;
+    height: 65%;
+    border-radius: 12px;
+}
+
+/* CLOSE BUTTON */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* ⬅️➡️ NAV BUTTONS */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background: red;
+}
+
+.nav-btn.left {
+    left: 20px;
+}
+
+.nav-btn.right {
+    right: 20px;
+}
+
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+    .hero {
+        height: 50vh;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box input,
+    .search-box button {
+        width: 80%;
+        border-radius: 8px;
+        margin: 5px auto;
+    }
 
     .selected-card {
         flex-direction: column;
@@ -175,26 +293,16 @@ button {
     }
 
     .selected-card img {
-        width: 80%;
+        width: 70%;
+        margin: auto;
     }
 
-    .details {
-        text-align: center;
+    .modal iframe {
+        width: 95%;
+        height: 50%;
     }
 
-    input,
-    button {
-        width: 80%;
-        margin: 10px 0;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .container {
-        grid-template-columns: repeat(2, 1fr);
+    .nav-btn {
+        font-size: 28px;
     }
 }

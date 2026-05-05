@@ -4,123 +4,198 @@
 <head>
     <title>Movie Recommender</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <!-- 🔝 TOPBAR -->
-    <div class="topbar">
-        <h2>🎬 Movie Recommender</h2>
-        <div>
-            <span>Welcome {{ user }}</span>
-            <a href="/logout">Logout</a>
-        </div>
+<!-- 🔝 TOPBAR -->
+<div class="topbar">
+    <h2>🎬 Movie Recommender</h2>
+    <div>
+        <span>Welcome {{ user }}</span>
+        <a href="/logout">Logout</a>
     </div>
+</div>
 
-    <!-- 🔍 SEARCH -->
-    <form method="POST">
-        <input list="movies" name="movie" placeholder="Search movie..." required>
+<!-- 🎬 HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Unlimited Movies, Recommendations & Trailers</h1>
+        <p>AI-powered movie suggestions just for you 🎬</p>
 
-        <datalist id="movies">
-            {% for m in movies %}
-            <option value="{{ m }}">
+        <form method="POST" class="search-box">
+            <input list="movies" name="movie" placeholder="Search movie..." required>
+
+            <datalist id="movies">
+                {% for m in movies %}
+                <option value="{{ m }}">
                 {% endfor %}
-        </datalist>
+            </datalist>
 
-        <button type="submit">Search</button>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+<!-- 📢 EMPTY -->
+{% if not recommendations[0] and not selected_movie %}
+<h2 class="search-text">Search a movie to get recommendations 🎬</h2>
+{% endif %}
+
+<!-- 🎬 SELECTED -->
+{% if selected_movie %}
+<div class="selected-movie">
+    <h2>{{ selected_movie.name }}</h2>
+
+    <div class="selected-card">
+        <img src="{{ selected_movie.poster }}">
+        <div class="details">
+            <div class="rating">⭐ {{ selected_movie.rating }}</div>
+            <p>{{ selected_movie.overview }}</p>
+
+            <button onclick="openTrailerList(['{{ selected_movie.trailer }}'], 0)">
+                ▶ Play Trailer
+            </button>
+        </div>
+    </div>
+
+    <h2 class="section-title">Similar Movies 🎥</h2>
+</div>
+{% endif %}
+
+<!-- 🎬 RECOMMENDATIONS -->
+<div class="container">
+{% if recommendations[0] %}
+{% for i in range(recommendations[0]|length) %}
+<div class="card"
+     data-trailers='{{ recommendations[2] | tojson | safe }}'
+     data-index="{{ i }}">
+
+    <img src="{{ recommendations[1][i] }}">
+    <p>{{ recommendations[0][i] }}</p>
+
+    <form method="POST" action="/add_favorite" onclick="event.stopPropagation();">
+        <input type="hidden" name="movie" value="{{ recommendations[0][i] }}">
+        <button class="fav-btn">❤️</button>
     </form>
+</div>
+{% endfor %}
+{% endif %}
+</div>
 
-    <!-- 📢 EMPTY MESSAGE -->
-    {% if not recommendations[0] and not selected_movie %}
-    <h2 style="text-align:center;">Search a movie to get recommendations 🎬</h2>
-    {% endif %}
-
-    <!-- 🎬 SELECTED MOVIE -->
-    {% if selected_movie %}
-    <div class="selected-movie">
-
-        <h2>🎬 {{ selected_movie.name }}</h2>
-
-        <div class="selected-card">
-            <img src="{{ selected_movie.poster }}">
-
-            <div class="details">
-                <p>
-                    {% for i in range(selected_movie.rating|int // 2) %}
-                    ⭐
-                    {% endfor %}
-                </p>
-                <p>{{ selected_movie.overview }}</p>
-
-                <button onclick="playTrailer('{{ selected_movie.trailer }}')">
-                    ▶ Play Trailer
-                </button>
-            </div>
-        </div>
-
-        <h2 style="text-align:center;">Similar Movies 🎥</h2>
-
-    </div>
-    {% endif %}
-
-    <!-- 🎬 RECOMMENDATIONS -->
-    <div class="container">
-        {% if recommendations[0] %}
-        {% for i in range(recommendations[0]|length) %}
-        <div class="card">
-
-            <img src="{{ recommendations[1][i] }}" onclick="playTrailer('{{ recommendations[2][i] }}')">
-
-            <p>{{ recommendations[0][i] }}</p>
-
-            <!-- ❤️ Favorite -->
-            <form method="POST" action="/add_favorite">
-                <input type="hidden" name="movie" value="{{ recommendations[0][i] }}">
-                <button class="fav-btn">❤️</button>
-            </form>
-
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-
-    <!-- ❤️ FAVORITES -->
-    <h3 style="text-align:center;">Your Favorites ❤️</h3>
+<!-- ❤️ FAVORITES -->
+<div class="favorites-box">
+    <h3>Your Favorites ❤️</h3>
 
     {% if favorites %}
-    <ul style="text-align:center;">
+    <ul>
         {% for movie in favorites %}
         <li>{{ movie }}</li>
         {% endfor %}
     </ul>
     {% else %}
-    <p style="text-align:center;">No favorites yet. Add some ❤️</p>
+    <p>No favorites yet. Add some ❤️</p>
     {% endif %}
+</div>
 
-    <!-- 🎥 TRAILER MODAL -->
-    <div id="modal" class="modal">
-        <span class="close" onclick="closeModal()">✖</span>
-        <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
-    </div>
+<!-- 🎥 MODAL -->
+<div id="modal" class="modal">
+    <span class="close" onclick="closeModal()">✖</span>
 
-    <script>
-        function playTrailer(url) {
-            if (!url) {
-                alert("Trailer not available");
-                return;
-            }
+    <div id="counter"></div>
 
-            document.getElementById("modal").style.display = "flex";
-            document.getElementById("videoFrame").src = url;
-        }
+    <button class="nav-btn left" onclick="prevTrailer()">⟨</button>
 
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
-            document.getElementById("videoFrame").src = "";
-        }
-    </script>
+    <iframe id="videoFrame" src="" allowfullscreen></iframe>
+
+    <button class="nav-btn right" onclick="nextTrailer()">⟩</button>
+</div>
+
+<script>
+let trailers = [];
+let currentIndex = 0;
+
+function openTrailerList(list, index) {
+    trailers = list;
+    currentIndex = index;
+    playCurrent();
+}
+
+function playCurrent() {
+    const modal = document.getElementById("modal");
+    const frame = document.getElementById("videoFrame");
+    const counter = document.getElementById("counter");
+
+    let url = trailers[currentIndex];
+
+    if (!url) {
+        alert("Trailer not available");
+        return;
+    }
+
+    frame.src = "";
+    setTimeout(() => {
+        frame.src = url.includes("?")
+            ? url + "&autoplay=1&mute=1"
+            : url + "?autoplay=1&mute=1";
+    }, 200);
+
+    counter.innerText = (currentIndex + 1) + " / " + trailers.length;
+
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+function nextTrailer() {
+    if (currentIndex < trailers.length - 1) {
+        currentIndex++;
+        playCurrent();
+    }
+}
+
+function prevTrailer() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        playCurrent();
+    }
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("videoFrame").src = "";
+    document.body.style.overflow = "auto";
+}
+
+/* Click cards */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", function () {
+            const trailers = JSON.parse(this.dataset.trailers);
+            const index = parseInt(this.dataset.index);
+            openTrailerList(trailers, index);
+        });
+    });
+});
+
+/* Keyboard */
+document.addEventListener("keydown", function (e) {
+    if (document.getElementById("modal").style.display === "flex") {
+        if (e.key === "ArrowRight") nextTrailer();
+        if (e.key === "ArrowLeft") prevTrailer();
+        if (e.key === "Escape") closeModal();
+    }
+});
+
+/* Click outside */
+document.getElementById("modal").addEventListener("click", function (e) {
+    if (e.target.id === "modal") closeModal();
+});
+</script>
 
 </body>
-
 </html>
