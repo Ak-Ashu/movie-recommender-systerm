@@ -32,9 +32,9 @@ body {
     color: white;
 }
 
-/* 🎬 HERO (FIXED SIZE + CENTERED) */
+/* 🎬 HERO  */
 .hero {
-    height: 60vh; /* FIXED HEIGHT */
+    height: 60vh;
     background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070') center/cover no-repeat;
     display: flex;
     justify-content: center;
@@ -156,7 +156,7 @@ body {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    cursor: pointer; /* 🔥 FIX CURSOR */
+    cursor: pointer;
     transition: 0.3s;
 }
 
@@ -238,7 +238,7 @@ body {
     cursor: pointer;
 }
 
-/* ⬅️➡️ NAV BUTTONS */
+/* NAV BUTTONS */
 .nav-btn {
     position: absolute;
     top: 50%;
